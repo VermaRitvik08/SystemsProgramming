@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Put your code here
+# You may only use the following external programs: ls, echo, awk, cat, grep, sort, wc, bc
+   
+# NUM=(`cat input.txt | awk '{print $NF}'`)
+# KW=(`cat input.txt | awk '{
+#     if (match($0,/[0-9]/)) {
+#         kw = substr($0,0,match($0,/[0-9]/)-1);
+#         print kw;
+#         }    
+#     }'`)
+
+declare -A sum_array
+for file in submissions/*;  
+do
+IFS=$'\n'     
+sum=0  
+
+        for j in $(cat input.txt); do 
+                number=$(echo "$j" | awk '{print $NF}') #take last item in field
+                kw=$(echo "$j" | awk '{if (match($0,/[0-9]/)) {kw = substr($0,0,match($0,/[0-9]/)-1); print kw;}}')
+                times=$(grep -o -i $kw $file | wc -l) 
+                score=$(echo $times*$number | bc -l) 
+                sum=$(echo $sum+$score | bc -l)
+        done
+filename="${file##*/}"  # writing filename without path (sourced from internet(the ##* part))
+sum_array["$filename"]=$sum 
+done
+
+for i in "${!sum_array[@]}"; do 
+    sum="${sum_array[$i]}"
+    sum=`echo $sum | awk '{printf "%g", $0}'` #to remove the trailing zeroes
+	echo $sum $i
+done | sort -r -n -k1 #reversing and sorting the first column based on number
+
