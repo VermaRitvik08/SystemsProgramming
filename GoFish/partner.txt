@@ -1,0 +1,3 @@
+Partner - Ritvik Verma (Spire id - 32840122)
+Worked on all the functions together. Ritvik took the lead of implementing deck.c and gofish.c and Anush took the lead on implementing player.c and
+designing the algorithm of gofish.c
